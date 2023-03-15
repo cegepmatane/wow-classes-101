@@ -14,9 +14,6 @@ function closeClassDetail(evenement){
 const classCards = document.getElementsByClassName("class-card")
 
 for (i=0; i < classCards.length; i++){
-    // console.log(classCards[i].getElementsByClassName("button-open")[0])
-    //console.log(classCards[i].nextElementSibling.getElementsByClassName("button-close")[0])
-    
     classCards[i].getElementsByClassName("button-open")[0].addEventListener("click",(evenement) => openClassDetail(evenement));
     classCards[i].nextElementSibling.getElementsByClassName("button-close")[0].addEventListener("click", closeClassDetail);
 }
