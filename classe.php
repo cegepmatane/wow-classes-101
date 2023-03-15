@@ -4,6 +4,7 @@ include_once "dao/ClasseDAO.php";
 
 $classes = ClasseDAO::listerClasseAvecSpecialisation();
 ?>
+<link rel="stylesheet" href="css/classe.css">
 
 <section class="content d-grid">
     <header>
@@ -16,7 +17,7 @@ $classes = ClasseDAO::listerClasseAvecSpecialisation();
             // PARTIE VUE
             foreach ($classes as $classe) {
             ?>
-            <div class="card d-flex flex-wrap col-5 row-6 mb-5 mr-3 flex-row align-items-center class-card">
+            <div class="card d-flex flex-wrap col-5 row-6 mb-5 mr-3 flex-row align-items-center style-card class-card">
                 <img class="card-img-center crest" src="assets/classe/<?=$classe->nomCSS?>/crest.png" alt="<?=$classe->nom?> Crest"/>
                 <div class="text-white fw-bold w-50">
                     <div class="card-body  text-center">
@@ -47,7 +48,7 @@ $classes = ClasseDAO::listerClasseAvecSpecialisation();
             <div class="container px-4 px-lg-5 class-detail class-detail-hidden" id="<?= $classe->nom ?>-detail">
                 <div class="row gx-4 gx-lg-5 row-cols-11 row-cols-md-11 row-cols-xl-11 justify-content-center">
                     <div class="col mb-5">
-                        <div class="card h-100 d-flex flex-row">
+                        <div class="card h-100 d-flex flex-row style-detail">
                             <!-- Character image-->
                             <img class="card-img-left image-detail" src="assets/classe/<?=$classe->nomCSS?>/<?=$classe->nomCSS?>.jpg" alt="<?=$classe->nom?> Image" />
                             <!-- Class details-->

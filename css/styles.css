@@ -1,7 +1,7 @@
 @font-face {
     font-family: Lifecraft;
     src: url(../assets/font/LifeCraft_Font.ttf);
-  }
+}
 
 body {
     background-color: #0E0E0E;
@@ -10,37 +10,6 @@ body {
 .ff-lifecraft {
     font-family: Lifecraft;
 }
-
-/* Header */
-.header-logo {
-    height: 40px;
-}
-
-
-/* Cards */
-.class-card-hidden {
-    display: none;
-}
-
-.class-card {
-    min-height: 328px;
-}
-
-.crest {
-    height: 250px;
-}
-
-.style-card{
-    background: #333;
-}
-
-/* Details */
-.class-detail-hidden {
-    display: none;
-}
-
-
-/* Class color */
 
 .text-white {
     color: white;
@@ -54,24 +23,16 @@ body {
     margin-top: -3rem;
 }
 
-.icon-specialisation {
-    height: 64px;
-    
+
+/* Header */
+.header-logo {
+    height: 40px;
 }
-.icon-specialisation:hover {
-    height: 64px;
-    -webkit-box-shadow: 0px 0px 7px 5px #FDFF3C; 
-    box-shadow: 0px 0px 7px 5px #FDFF3C;
+.header-footer-color {
+    background-color: #111111;
 }
 
-.image-slide {
-    width: 80%;
-}
 
-.slider-alliance{
-    background: url(../assets/background/leather-blue.jpg);
-}
 
-.slider-horde{
-    background: url(../assets/background/leather-red.jpg);
-}
+
+

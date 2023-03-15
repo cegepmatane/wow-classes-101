@@ -5,6 +5,7 @@ include_once "dao/RaceDAO.php";
 $racesAlliance = RaceDAO::listerRaceParFaction("Alliance");
 $racesHorde = RaceDAO::listerRaceParFaction("Horde");
 ?>
+<link rel="stylesheet" href="css/race.css">
 
 <section class="slider-alliance text-center text-white splide pt-3 pb-2" aria-labelledby="carousel-heading">
 <h2 id="carousel-heading">Races de l'Alliance</h2>
