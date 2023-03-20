@@ -12,6 +12,8 @@
   </p>
 </div>
 
+La taille gargantuesque du commit <37dcd3e9e30175eab7a05fc442719b2441079719> est du a un probleme de sync entre mon repo locale et distant faque j'ai du re-cloner et copier coller l'entiereté de mon code
+
 ### Partie DHTML
 [lien vers la page](https://theholydomain.com/devoir-ajax-2023-GalahadIII/classe.php)
 
