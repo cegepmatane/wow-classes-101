@@ -1,0 +1,13 @@
+body {
+    background-image: url("../assets/background/map.jpg");
+    background-position: top;
+}
+
+footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    color: white;
+    text-align: center;
+  }
