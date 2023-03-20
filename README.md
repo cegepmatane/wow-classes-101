@@ -29,4 +29,4 @@ Cliquer sur un des icônes présent dans la page apelle un fonction JS qui récu
 ### Partie Composante
 [lien vers la page](https://theholydomain.com/devoir-ajax-2023-GalahadIII/race.php)
 
-J'ai utiliser la librairies [splide.js](https://splidejs.com/) Et je m'en suis servis afin de pouvoir créer un caroussel de html.
+J'ai utiliser la librairie [splide.js](https://splidejs.com/) Et je m'en suis servis afin de pouvoir créer un caroussel de html.
