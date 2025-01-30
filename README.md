@@ -12,12 +12,12 @@
   </p>
 </div>
 
-📌 Description
+## 📌 Description
 
 Ce projet permet de récupérer et d'afficher les données du jeu World of Warcraft en utilisant l'API Blizzard. Il inclut un système de cache en PHP pour optimiser les performances et des endpoints exposant les données en JSON, consommées ensuite par une interface JavaScript. Les utilisateurs peuvent consulter des informations détaillées sur les classes, spécialisations et races jouables du jeu, avec des images associées.
 
 
-🛠 Technologies utilisées
+## 🛠 Technologies utilisées
 
 Backend :
 
