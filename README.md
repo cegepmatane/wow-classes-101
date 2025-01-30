@@ -71,16 +71,20 @@ Démarrer un serveur local :
 ## 🔥 Fonctionnalités
 
 ✅ Connexion à l’API Blizzard via OAuth 2.0
+
 ✅ Récupération des données des races, classes et spécialisations
+
 ✅ Gestion d’un cache en PHP pour optimiser les performances
+
 ✅ API REST en PHP exposant les données en JSON
 ✅ Interface en JavaScript affichant les informations en temps réel
 
+
 ### 📖 Endpoints disponibles
 Méthode	Endpoint	Description
-GET	/api/classes	Retourne la liste des classes
-GET	/api/races	Retourne la liste des races
-GET	/api/specialisations	Retourne les spécialisations
+- GET	/api/classes	Retourne la liste des classes
+- GET	/api/races	Retourne la liste des races
+- GET	/api/specialisations	Retourne les spécialisations
 
 ## 👥 Contributeurs
 
