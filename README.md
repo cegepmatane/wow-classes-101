@@ -18,6 +18,7 @@ Ce projet permet de récupérer et d'afficher les données du jeu World of Warcr
 
 
 🛠 Technologies utilisées
+
 Backend :
 
     PHP : Gestion des DAO, système de cache, et endpoints API
