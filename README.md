@@ -80,7 +80,7 @@ Démarrer un serveur local :
 ✅ Interface en JavaScript affichant les informations en temps réel
 
 
-### 📖 Endpoints disponibles
+## 📖 Endpoints disponibles
 Méthode	Endpoint	Description
 - GET	/api/classes	Retourne la liste des classes
 - GET	/api/races	Retourne la liste des races
