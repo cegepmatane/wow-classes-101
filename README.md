@@ -77,6 +77,7 @@ Démarrer un serveur local :
 ✅ Gestion d’un cache en PHP pour optimiser les performances
 
 ✅ API REST en PHP exposant les données en JSON
+
 ✅ Interface en JavaScript affichant les informations en temps réel
 
 
