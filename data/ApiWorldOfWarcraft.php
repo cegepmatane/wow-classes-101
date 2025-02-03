@@ -1,5 +1,7 @@
 <?php
 require_once 'EnvLoader.php';
+require_once 'OAuthBlizzard.php';
+
 
 class ApiWorldOfWarcraft {
     private static string $apiBaseUrl;
@@ -12,7 +14,7 @@ class ApiWorldOfWarcraft {
             self::$region = EnvLoader::get('REGION');
             self::$namespace = EnvLoader::get('NAMESPACE');
             self::$locale = EnvLoader::get('LOCALE');
-            self::$apiBaseUrl = "https://" . self::$region . ".blizzard.com/data/wow";
+            self::$apiBaseUrl = "https://" . self::$region . ".api.blizzard.com/data/wow/";
         }
     }
 
@@ -35,7 +37,7 @@ class ApiWorldOfWarcraft {
         $reponse = curl_exec($ch);
         $codeHttp = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
-
+        
         if ($codeHttp === 200) {
             return json_decode($reponse, true);
         }

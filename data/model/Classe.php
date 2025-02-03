@@ -1,6 +1,4 @@
 <?php
-require_once 'OAuthBlizzard.php';
-require_once 'CacheManager.php';
 
 class Classe {
     public readonly int $id;
