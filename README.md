@@ -54,7 +54,7 @@ cd ton-repo
 ```
 Configurer les variables d’environnement :
 
-Créer un fichier .env avec les informations suivantes :
+Créer un fichier .env dans le dossier data avec les informations suivantes :
 ```bash
     BLIZZARD_CLIENT_ID=ton_id
     BLIZZARD_CLIENT_SECRET=ton_secret
