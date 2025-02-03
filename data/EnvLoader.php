@@ -1,34 +1,41 @@
 <?php
 
-// Par défaut cherche le .env au meme niveaux que cette classe 
-
 class EnvLoader {
     private static array $variables = [];
-    private static bool $charge = false;
+    private static array $charge = [];
 
-    public static function charger($cheminEnv){
-        if (self::$charge) {
+    public static function load(string $cheminEnv): void
+    {
+        $realpathCheminEnv = realpath($cheminEnv);
+        if (in_array($realpathCheminEnv, self::$charge))
+        {
             return;
         }
 
-        if (!file_exists($cheminEnv)) {
-            throw new Exception("Fichier .env non trouvé : " . $cheminEnv);
+        if (!file_exists($realpathCheminEnv))
+        {
+            throw new Exception("Fichier .env non trouvé : " . $realpathCheminEnv);
         }
 
-        $lignes = file($cheminEnv, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-        foreach ($lignes as $ligne) {
-            if (strpos($ligne, '=') !== false) {
+        $lignes = file($realpathCheminEnv, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        foreach ($lignes as $ligne)
+        {
+            if (strpos($ligne, '=') !== false)
+            {
                 list($cle, $valeur) = explode('=', $ligne, 2);
                 self::$variables[trim($cle)] = trim($valeur);
             }
         }
 
-        self::$charge = true;
+        array_push(self::$charge, $realpathCheminEnv);
+
+        return;
     }
 
-    public static function get(string $cle, string $defaut = '', string $cheminEnv = __DIR__ . "/.env"){
-        self::charger($cheminEnv);
-        
+    public static function get(string $cle, string $defaut = '', string $cheminEnv = __DIR__ . "/.env")
+    {
+        self::load($cheminEnv);
+
         return self::$variables[$cle] ?? $defaut;
     }
 }
