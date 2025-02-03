@@ -1,5 +1,6 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/../data/model/Classe.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/../data/model/Specialisation.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/../data/CacheManager.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/../data/ApiWorldOfWarcraft.php';
 
