@@ -1,9 +1,7 @@
 <?php
+require_once 'EnvLoader.php';
 
 class OAuthBlizzard {
-    public string $region;
-    public string $locale;
-
     private string $clientId;
     private string $clientSecret;
     private string $cacheExpiration;
@@ -11,39 +9,19 @@ class OAuthBlizzard {
     private ?int $expireA = null;
 
     public function __construct() {
-        $this->chargerVariablesEnv();
-    }
-
-    private function chargerVariablesEnv(): void {
-        $fichierEnv = __DIR__ . '/.env';
-        if (!file_exists($fichierEnv)) {
-            throw new Exception("Fichier .env non trouvé");
-        }
-
-        $lignes = file($fichierEnv, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-        foreach ($lignes as $ligne) {
-            if (strpos($ligne, '=') !== false) {
-                list($cle, $valeur) = explode('=', $ligne, 2);
-                $_ENV[trim($cle)] = trim($valeur);
-            }
-        }
-
-        $this->clientId = $_ENV['BLIZZARD_CLIENT_ID'] ?? '';
-        $this->clientSecret = $_ENV['BLIZZARD_CLIENT_SECRET'] ?? '';
-        $this->cacheExpiration = $_ENV['CACHE_EXPIRATION'] ?? '86400';
-        $this->region = $_ENV['REGION'] ?? 'us';
-        $this->locale = $_ENV['LOCALE'] ?? 'en_US';
+        $this->clientId = EnvLoader::get('BLIZZARD_CLIENT_ID');
+        $this->clientSecret = EnvLoader::get('BLIZZARD_CLIENT_SECRET');
     }
 
     private function demanderToken(): bool {
         $url = "https://oauth.battle.net/oauth/token";
         $identifiants = base64_encode("{$this->clientId}:{$this->clientSecret}");
-        
+
         $enTetes = [
             "Authorization: Basic {$identifiants}",
             "Content-Type: application/x-www-form-urlencoded"
         ];
-        
+
         $donnees = "grant_type=client_credentials";
 
         $ch = curl_init($url);
@@ -51,7 +29,7 @@ class OAuthBlizzard {
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $donnees);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $enTetes);
-        
+
         $reponse = curl_exec($ch);
         $codeHttp = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
@@ -89,7 +67,7 @@ class OAuthBlizzard {
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $enTetes);
-        
+
         $reponse = curl_exec($ch);
         $codeHttp = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
