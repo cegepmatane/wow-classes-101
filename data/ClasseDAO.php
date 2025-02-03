@@ -49,5 +49,30 @@ class ClasseDAO {
         
         return new Classe($classeData);
     }
+
+    public static function getSpecialisationsByClasse(int $classeId): array {
+        $cacheKey = "specialisations_classe_$classeId";
+        if ($cachedData = CacheManager::get($cacheKey)) {
+            return $cachedData;
+        }
+
+        $data = ApiWorldOfWarcraft::faireRequeteApi("playable-class/$classeId");
+        
+        if (!$data || !isset($data['specializations'])) return [];
+
+        $specialisations = array_map(function($spec) {
+            $specDetails = [
+                'id' => $spec['id'],
+                'nom' => $spec['name'],
+                'description' => $spec['gender_description']['male'], 
+                'role' => $spec['role']['name'] ?? 'Inconnu' 
+            ];
+
+            return $specDetails;
+        }, $data['specializations']);
+
+        CacheManager::set($cacheKey, $specialisations);
+        return $specialisations;
+    }
 }
 
