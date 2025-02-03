@@ -1,17 +1,16 @@
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . '/../data/model/Classe.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/../data/CacheManager.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/../data/ApiWorldOfWarcraft.php';
 
 class ClasseDAO {
 
-    // Récupérer la liste des classes
     public static function getClasses(): array {
         $cacheKey = "classes";
         if ($cachedData = CacheManager::get($cacheKey)) {
             return $cachedData;
         }
 
-        // Appel à l'API via la méthode statique de ApiWorldOfWarcraft
         $data = ApiWorldOfWarcraft::faireRequeteApi('playable-class/index');
         
         if (!$data || !isset($data['classes'])) return [];
@@ -25,14 +24,12 @@ class ClasseDAO {
         return $classes;
     }
 
-    // Récupérer les détails d'une classe spécifique
     public static function getClasseDetails(int $id): ?Classe {
         $cacheKey = "class_$id";
         if ($cachedData = CacheManager::get($cacheKey)) {
             return new Classe($cachedData);
         }
 
-        // Appel à l'API via la méthode statique de ApiWorldOfWarcraft
         $data = ApiWorldOfWarcraft::faireRequeteApi("playable-class/$id");
         
         if (!$data) return null;
