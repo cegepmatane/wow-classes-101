@@ -1,33 +1,29 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/../data/ClasseDAO.php';
 
-// Vérifier si un ID de classe est fourni
-if (!isset($_GET['classe_id']) || !is_numeric($_GET['classe_id'])) {
-    header('Content-Type: application/json', true, 400);
-    echo json_encode(['error' => 'ID de classe invalide']);
-    exit();
-}
+if (isset($_GET['id']) && is_numeric($_GET['id'])) {
+    $idClasse = (int) $_GET['id'];
 
-// Récupérer l'ID de la classe depuis l'URL
-$classeId = (int) $_GET['classe_id'];
+    // Récupérer la classe et ses spécialisations
+    $classe = ClasseDAO::getClasseDetails($idClasse);
 
-try {
-    // Appeler la méthode du ClasseDAO pour récupérer les spécialisations de la classe
-    $specialisations = ClasseDAO::getSpecialisationsByClasse($classeId);
+    if ($classe) {
+        // Récupérer les spécialisations
+        $specialisations = ClasseDAO::getSpecialisationsByClasse($idClasse);
 
-    // Vérifier si des spécialisations ont été retournées
-    if (!empty($specialisations)) {
-        // Si des spécialisations sont disponibles, les retourner sous forme de JSON
-        header('Content-Type: application/json');
-        echo json_encode($specialisations); // Retourner les spécialisations en JSON
+        if ($specialisations) {
+            header('Content-Type: application/json');
+            echo json_encode($specialisations);
+        } else {
+            header('Content-Type: application/json', true, 404);
+            echo json_encode(['error' => 'Aucune spécialisation trouvée pour cette classe']);
+        }
     } else {
-        // Si aucune spécialisation n'a été trouvée, retourner une réponse d'erreur 404
         header('Content-Type: application/json', true, 404);
-        echo json_encode(['error' => 'Aucune spécialisation trouvée pour cette classe']);
+        echo json_encode(['error' => 'Classe non trouvée']);
     }
-} catch (Exception $e) {
-    // En cas d'exception, retourner une réponse d'erreur 500 avec le message de l'exception
-    header('Content-Type: application/json', true, 500);
-    echo json_encode(['error' => 'Erreur interne du serveur', 'message' => $e->getMessage()]);
+} else {
+    header('Content-Type: application/json', true, 400);
+    echo json_encode(['error' => 'ID de la classe invalide ou manquant']);
 }
 ?>
