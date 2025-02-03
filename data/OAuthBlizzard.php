@@ -2,20 +2,23 @@
 require_once 'EnvLoader.php';
 
 class OAuthBlizzard {
-    private string $clientId;
-    private string $clientSecret;
-    private string $cacheExpiration;
-    private ?string $tokenAcces = null;
-    private ?int $expireA = null;
+    private static string $clientId;
+    private static string $clientSecret;
+    private static ?string $tokenAcces = null;
+    private static ?int $expireA = null;
 
-    public function __construct() {
-        $this->clientId = EnvLoader::get('BLIZZARD_CLIENT_ID');
-        $this->clientSecret = EnvLoader::get('BLIZZARD_CLIENT_SECRET');
+    private static function init(): void {
+        if (!isset(self::$clientId) || !isset(self::$clientSecret)) {
+            self::$clientId = EnvLoader::get('BLIZZARD_CLIENT_ID');
+            self::$clientSecret = EnvLoader::get('BLIZZARD_CLIENT_SECRET');
+        }
     }
 
-    private function demanderToken(): bool {
+    private static function demanderToken(): bool {
+        self::init();
+
         $url = "https://oauth.battle.net/oauth/token";
-        $identifiants = base64_encode("{$this->clientId}:{$this->clientSecret}");
+        $identifiants = base64_encode(self::$clientId . ":" . self::$clientSecret);
 
         $enTetes = [
             "Authorization: Basic {$identifiants}",
@@ -36,8 +39,8 @@ class OAuthBlizzard {
 
         if ($codeHttp === 200) {
             $json = json_decode($reponse, true);
-            $this->tokenAcces = $json['access_token'];
-            $this->expireA = time() + $json['expires_in'];
+            self::$tokenAcces = $json['access_token'];
+            self::$expireA = time() + $json['expires_in'];
             return true;
         }
 
@@ -45,37 +48,12 @@ class OAuthBlizzard {
         return false;
     }
 
-    public function obtenirTokenAcces(): ?string {
-        if (!$this->tokenAcces || time() >= $this->expireA) {
-            if (!$this->demanderToken()) {
+    public static function obtenirTokenAcces(): ?string {
+        if (!self::$tokenAcces || time() >= self::$expireA) {
+            if (!self::demanderToken()) {
                 return null;
             }
         }
-        return $this->tokenAcces;
-    }
-
-    public function faireRequeteApi(string $url): ?array {
-        $token = $this->obtenirTokenAcces();
-        if (!$token) {
-            return null;
-        }
-
-        $enTetes = [
-            "Authorization: Bearer {$token}"
-        ];
-
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $enTetes);
-        $reponse = curl_exec($ch);
-        $codeHttp = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
-
-        if ($codeHttp === 200) {
-            return json_decode($reponse, true);
-        }
-
-        echo "Erreur lors de la requête API : {$codeHttp}";
-        return null;
+        return self::$tokenAcces;
     }
 }

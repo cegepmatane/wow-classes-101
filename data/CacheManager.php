@@ -2,33 +2,38 @@
 require_once 'EnvLoader.php';
 
 class CacheManager {
-    private string $cacheDir;
-    private int $cacheExpiration;
+    private static string $cacheDir;
+    private static int $cacheExpiration;
 
-    public function __construct() {
-        $this->cacheExpiration = (int) EnvLoader::get('CACHE_EXPIRATION');
-        $this->cacheDir = EnvLoader::get('CACHE_DIR');
+    public static function init(): void {
+        if (!isset(self::$cacheExpiration) || !isset(self::$cacheDir)) {
+            self::$cacheExpiration = (int) EnvLoader::get('CACHE_EXPIRATION');
+            self::$cacheDir = EnvLoader::get('CACHE_DIR');
 
-        if (!file_exists($this->cacheDir)) {
-            mkdir($this->cacheDir, 0777, true);
+            if (!file_exists(self::$cacheDir)) {
+                mkdir(self::$cacheDir, 0777, true);
+            }
         }
     }
 
-    public function get(string $key): ?array {
-        $filePath = $this->cacheDir . '/' . $key . '.json';
+    public static function get(string $key): ?array {
+        self::init();
+
+        $filePath = self::$cacheDir . '/' . $key . '.json';
         if (file_exists($filePath)) {
             $content = file_get_contents($filePath);
             $data = json_decode($content, true);
 
-            if (isset($data['timestamp']) && time() - $data['timestamp'] < $this->cacheExpiration) {
+            if (isset($data['timestamp']) && time() - $data['timestamp'] < self::$cacheExpiration) {
                 return $data['data'];
             }
         }
         return null;
     }
     
-    public function set(string $key, array $data): void {
-        $filePath = $this->cacheDir . '/' . $key . '.json';
+    public static function set(string $key, array $data): void {
+        self::init();
+        $filePath = self::$cacheDir . '/' . $key . '.json';
         $dataToStore = [
             'timestamp' => time(),
             'data' => $data
@@ -36,7 +41,8 @@ class CacheManager {
         file_put_contents($filePath, json_encode($dataToStore));
     }
 
-    public function isCached(string $key): bool {
-        return file_exists($this->cacheDir . '/' . $key . '.json');
+    public static function isCached(string $key): bool {
+        self::init();
+        return file_exists(self::$cacheDir . '/' . $key . '.json');
     }
 }
