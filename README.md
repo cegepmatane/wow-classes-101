@@ -56,11 +56,12 @@ Configurer les variables d’environnement :
 
 Créer un fichier .env dans le dossier data avec les informations suivantes :
 ```bash
-    BLIZZARD_CLIENT_ID=ton_id
-    BLIZZARD_CLIENT_SECRET=ton_secret
-    CACHE_EXPIRATION=3600
+    BLIZZARD_CLIENT_ID=ID
+    BLIZZARD_CLIENT_SECRET=SECRET
+    CACHE_EXPIRATION=86400
+    CACHE_DIR="./cache"
     REGION=us
-    LOCALE=en-US
+    LOCALE=en_US
 ```
 Démarrer un serveur local :
 ```bash
