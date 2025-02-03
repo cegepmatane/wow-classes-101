@@ -1,0 +1,74 @@
+:root {
+    --deathknight: #C41E3A;
+    --demonhunter: #A330C9;
+    --druid: #FF7C0A;
+    --hunter: #AAD372;
+    --mage: #3FC7EB;
+    --monk: #00FF98; 
+    --paladin: #F48CBA;
+    --priest: #FFFFFF;
+    --rogue: #FFF468;
+    --shaman: #0070DD;
+    --warlock: #8788EE;
+    --warrior: #C69B6D;
+}
+
+/* Warrior */
+.warrior-color {
+    color: var(--warrior);
+}
+
+/* Paladin */
+.paladin-color {
+    color: var(--paladin);
+}
+
+/* Hunter */
+.hunter-color {
+    color: var(--hunter);
+}
+
+/* Rogue */
+.rogue-color {
+    color: var(--rogue);
+}
+
+/* Priest */
+.priest-color {
+    color: var(--priest);
+}
+
+/* Death Knight */
+.deathknight-color {
+    color: var(--deathknight);
+}
+
+/* Shaman */
+.shaman-color {
+    color: var(--shaman);
+}
+
+/* Mage */
+.mage-color {
+    color: var(--mage);
+}
+
+/* Warlock */
+.warlock-color {
+    color: var(--warlock);
+}
+
+/* Monk */
+.monk-color {
+    color: var(--monk);
+}
+
+/* Druid */
+.druid-color {
+    color: var(--druid);
+}
+
+/* Demon Hunter */
+.demonhunter-color {
+    color: var(--demonhunter);
+}
