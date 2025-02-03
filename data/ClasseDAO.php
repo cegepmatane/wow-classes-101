@@ -2,7 +2,6 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . '/../data/CacheManager.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/../data/ApiWorldOfWarcraft.php';
 
-
 class ClasseDAO {
 
     // Récupérer la liste des classes
@@ -41,20 +40,12 @@ class ClasseDAO {
         $specialisations = array_map(fn($spec) => $spec['id'], $data['specializations']);
         $energie = $data['power_type']['name'] ?? 'Inconnu';
 
-        $roles = [];
-        foreach ($data['specializations'] as $spec) {
-            $specDetails = ApiWorldOfWarcraft::faireRequeteApi($spec['key']['href']);
-            if ($specDetails && isset($specDetails['role'])) {
-                $roles[] = $specDetails['role'];
-            }
-        }
-
+        // Suppression des rôles dans cette classe
         $classeData = [
             'id' => $data['id'],
             'nom' => $data['name'],
             'specialisations' => $specialisations,
-            'energie' => $energie,
-            'roles' => implode(", ", array_unique($roles))
+            'energie' => $energie
         ];
 
         CacheManager::set($cacheKey, $classeData);
@@ -62,3 +53,4 @@ class ClasseDAO {
         return new Classe($classeData);
     }
 }
+

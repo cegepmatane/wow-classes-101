@@ -11,7 +11,7 @@ echo json_encode($classes, JSON_PRETTY_PRINT);
 echo "</pre>";
 
 if (isset($classes[0])) {
-    $classeId = $classes[0]['id']; // Utiliser l'ID de la première classe comme exemple
+    $classeId = $classes[0]['id'];
     echo "<h2>Détails de la classe avec ID {$classeId} (JSON)</h2>";
     $classeDetails = ClasseDAO::getClasseDetails($classeId);
 
@@ -21,7 +21,6 @@ if (isset($classes[0])) {
             'nom' => $classeDetails->nom,
             'specialisations' => $classeDetails->specialisations,
             'energie' => $classeDetails->energie,
-            'roles' => $classeDetails->roles
         ];
         
         echo "<pre>";
