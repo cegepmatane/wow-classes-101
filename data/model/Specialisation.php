@@ -1,4 +1,5 @@
 <?php
+
 class Specialisation {
     public readonly int $id;
     public readonly string $nom;

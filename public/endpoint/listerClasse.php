@@ -1,9 +1,9 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/../data/ClasseDAO.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/../data/WorldOfWarcraftDAO.php';
 
 header('Content-Type: application/json');
 
-$classes = ClasseDAO::getClasses();
+$classes = WorldOfWarcraftDAO::getClasses();
 
 echo json_encode($classes);
 ?>

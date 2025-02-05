@@ -4,7 +4,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/../data/model/Specialisation.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/../data/CacheManager.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/../data/ApiWorldOfWarcraft.php';
 
-class ClasseDAO {
+class WorldOfWarcraftDAO {
 
     public static function getClasses(): array {
         $cacheKey = "classes";
@@ -38,7 +38,6 @@ class ClasseDAO {
         $specialisations = array_map(fn($spec) => $spec['id'], $data['specializations']);
         $energie = $data['power_type']['name'] ?? 'Inconnu';
 
-        // Suppression des rôles dans cette classe
         $classeData = [
             'id' => $data['id'],
             'nom' => $data['name'],
@@ -51,29 +50,34 @@ class ClasseDAO {
         return new Classe($classeData);
     }
 
-    public static function getSpecialisationsByClasse(int $classeId): array {
-        $cacheKey = "specialisations_classe_$classeId";
+    public static function getSpecialisationsParClasse(int $id): array {
+        $cacheKey = "class_{$id}_specialisations";
         if ($cachedData = CacheManager::get($cacheKey)) {
-            return $cachedData;
+            return array_map(fn($specData) => new Specialisation($specData), $cachedData);
         }
-
-        $data = ApiWorldOfWarcraft::faireRequeteApi("playable-class/$classeId");
-        
+    
+        $data = ApiWorldOfWarcraft::faireRequeteApi("playable-class/$id");
+    
         if (!$data || !isset($data['specializations'])) return [];
-
-        $specialisations = array_map(function($spec) {
-            $specDetails = [
-                'id' => $spec['id'],
-                'nom' => $spec['name'],
-                'description' => $spec['gender_description']['male'], 
-                'role' => $spec['role']['name'] ?? 'Inconnu' 
-            ];
-
-            return $specDetails;
+    
+        $specialisations = array_map(function ($spec) {
+            $specData = ApiWorldOfWarcraft::faireRequeteApi("playable-specialization/{$spec['id']}");
+            
+            if (!$specData) return null;
+    
+            return new Specialisation([
+                'id' => $specData['id'],
+                'nom' => $specData['name'],
+                'description' => $specData['gender_description']['male'] ?? 'Aucune description',
+                'role' => $specData['role']['name'] ?? 'Inconnu'
+            ]);
         }, $data['specializations']);
-
-        CacheManager::set($cacheKey, $specialisations);
+    
+        $specialisations = array_filter($specialisations);
+    
+        CacheManager::set($cacheKey, array_map(fn($spec) => $spec->toArray(), $specialisations));
+    
         return $specialisations;
-    }
+    }    
 }
 
