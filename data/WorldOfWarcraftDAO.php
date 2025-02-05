@@ -1,6 +1,8 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/../data/model/Classe.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/../data/model/Specialisation.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/../data/model/Race.php';
+
 require_once $_SERVER['DOCUMENT_ROOT'] . '/../data/CacheManager.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/../data/ApiWorldOfWarcraft.php';
 
@@ -106,23 +108,25 @@ class WorldOfWarcraftDAO {
         if ($cachedData = CacheManager::get($cacheKey)) {
             return new Race($cachedData);
         }
-
+    
         $data = ApiWorldOfWarcraft::faireRequeteApi("playable-race/$id");
         if (!$data) return null;
-
+    
         $faction = $data['faction']['name'] ?? 'Inconnu';
-        $classesJouables = array_map(fn($class) => $class['id'], $data['playable_classes'] ?? []);
-
+        $classesJouables = isset($data['playable_classes']) ? 
+            array_map(fn($class) => $class['id'], $data['playable_classes']) : [];
+    
         $raceData = [
             'id' => $data['id'],
             'nom' => $data['name'],
             'faction' => $faction,
             'classes_jouables' => $classesJouables
         ];
-
+    
         CacheManager::set($cacheKey, $raceData);
         return new Race($raceData);
     }
+    
 
     public static function getRacesParFaction(string $faction): array {
         return array_filter(self::getRaces(), fn($race) => strtolower($race->faction) === strtolower($faction));
