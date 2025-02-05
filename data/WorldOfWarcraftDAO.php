@@ -52,33 +52,28 @@ class WorldOfWarcraftDAO {
         return new Classe($classeData);
     }
 
-    public static function getSpecialisationsParClasse(int $id): array {
-        $cacheKey = "class_{$id}_specialisations";
+    public static function getSpecialisationsParClasse(int $classeId): array {
+        $cacheKey = "specialisations_classe_$classeId";
         if ($cachedData = CacheManager::get($cacheKey)) {
-            return array_map(fn($specData) => new Specialisation($specData), $cachedData);
+            return $cachedData;
         }
-    
-        $data = ApiWorldOfWarcraft::faireRequeteApi("playable-class/$id");
-    
+
+        $data = ApiWorldOfWarcraft::faireRequeteApi("playable-class/$classeId");
+        
         if (!$data || !isset($data['specializations'])) return [];
-    
-        $specialisations = array_map(function ($spec) {
-            $specData = ApiWorldOfWarcraft::faireRequeteApi("playable-specialization/{$spec['id']}");
-            
-            if (!$specData) return null;
-    
-            return new Specialisation([
-                'id' => $specData['id'],
-                'nom' => $specData['name'],
-                'description' => $specData['gender_description']['male'] ?? 'Aucune description',
-                'role' => $specData['role']['name'] ?? 'Inconnu'
-            ]);
+
+        $specialisations = array_map(function($spec) {
+            $specDetails = [
+                'id' => $spec['id'],
+                'nom' => $spec['name'],
+                'description' => $spec['gender_description']['male'], 
+                'role' => $spec['role']['name'] ?? 'Inconnu' 
+            ];
+
+            return $specDetails;
         }, $data['specializations']);
-    
-        $specialisations = array_filter($specialisations);
-    
-        CacheManager::set($cacheKey, array_map(fn($spec) => $spec->toArray(), $specialisations));
-    
+
+        CacheManager::set($cacheKey, $specialisations);
         return $specialisations;
     }
 
@@ -108,25 +103,23 @@ class WorldOfWarcraftDAO {
         if ($cachedData = CacheManager::get($cacheKey)) {
             return new Race($cachedData);
         }
-    
+
         $data = ApiWorldOfWarcraft::faireRequeteApi("playable-race/$id");
         if (!$data) return null;
-    
+
         $faction = $data['faction']['name'] ?? 'Inconnu';
-        $classesJouables = isset($data['playable_classes']) ? 
-            array_map(fn($class) => $class['id'], $data['playable_classes']) : [];
-    
+        $classesJouables = array_map(fn($class) => $class['id'], $data['playable_classes'] ?? []);
+
         $raceData = [
             'id' => $data['id'],
             'nom' => $data['name'],
             'faction' => $faction,
             'classes_jouables' => $classesJouables
         ];
-    
+
         CacheManager::set($cacheKey, $raceData);
         return new Race($raceData);
     }
-    
 
     public static function getRacesParFaction(string $faction): array {
         return array_filter(self::getRaces(), fn($race) => strtolower($race->faction) === strtolower($faction));
