@@ -57,22 +57,36 @@ class WorldOfWarcraftDAO {
         if ($cachedData = CacheManager::get($cacheKey)) {
             return $cachedData;
         }
-
+    
         $data = ApiWorldOfWarcraft::faireRequeteApi("playable-class/$classeId");
         
         if (!$data || !isset($data['specializations'])) return [];
-
-        $specialisations = array_map(function($spec) {
-            $specDetails = [
-                'id' => $spec['id'],
-                'nom' => $spec['name'],
-                'description' => $spec['gender_description']['male'], 
-                'role' => $spec['role']['name'] ?? 'Inconnu' 
-            ];
-
-            return $specDetails;
-        }, $data['specializations']);
-
+    
+        $specialisations = [];
+    
+        foreach ($data['specializations'] as $spec) {
+            $specId = $spec['id'];
+            $specCacheKey = "specialisation_$specId";
+    
+            // Vérifier si la spécialisation est déjà en cache
+            if ($cachedSpec = CacheManager::get($specCacheKey)) {
+                $specialisations[] = new Specialisation($cachedSpec);
+                continue;
+            }
+            
+            $specDetails = ApiWorldOfWarcraft::faireRequeteApi("playable-specialization/$specId");
+        
+            $specialisation = new Specialisation([
+                'id' => $specDetails['id'],
+                'nom' => $specDetails['name'],
+                'description' => $specDetails['gender_description']['male'] ?? '',
+                'role' => $specDetails['role']['name'] ?? 'Inconnu'
+            ]);
+    
+            CacheManager::set($specCacheKey, $specialisation->toArray());
+            $specialisations[] = $specialisation;
+        }
+    
         CacheManager::set($cacheKey, $specialisations);
         return $specialisations;
     }
