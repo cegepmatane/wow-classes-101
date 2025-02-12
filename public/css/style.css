@@ -1,0 +1,96 @@
+@font-face {
+    font-family: Lifecraft;
+    src: url(../asset/font/LifeCraft_Font.ttf);
+}
+
+body {
+    background-color: #0E0E0E;
+}
+/* General */
+.ff-lifecraft {
+    font-family: Lifecraft;
+}
+
+/* Global styles */
+body {
+    font-family: Arial, sans-serif;
+  }
+  
+  .navbar {
+    background-color: #333;
+    padding: 10px 20px;
+  }
+  
+  .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .navbar-brand {
+    color: white;
+    text-decoration: none;
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  
+  .navbar-toggler {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+  
+  .navbar-links {
+    display: flex;
+  }
+  
+  .navbar-links ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+  }
+  
+  .navbar-links li {
+    margin-right: 20px;
+  }
+  
+  .nav-link {
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
+    padding: 8px 12px;
+  }
+  
+  .nav-link:hover,
+  .nav-link.active {
+    background-color: #555;
+    border-radius: 5px;
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    .navbar-links {
+      display: none;
+      width: 100%;
+      text-align: center;
+      margin-top: 10px;
+    }
+  
+    .navbar-links ul {
+      flex-direction: column;
+    }
+  
+    .navbar-toggler {
+      display: block;
+    }
+  
+    .navbar-links.active {
+      display: block;
+    }
+  }
+  
+

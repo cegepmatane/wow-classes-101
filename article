@@ -1,0 +1,85 @@
+WoW Classes 101 est un projet démontrant l'utilisation d'une API tierce dans un environnement web. Développé en PHP avec une architecture orientée REST, ce projet exploite les technologies modernes pour récupérer, traiter et afficher les données de World of Warcraft en optimisant les performances grâce à un système de cache que j'ai fait. Son objectif est de démontrer mes compétences en développement web full-stack. Le projet au complet a été fais sans l'utilisation d'aucune librairie externe afin de tester mes compétences et assurer la maintenabilité du code.
+
+Technologies utilisées
+
+Backend :
+
+PHP : Gestion des DAO, système de cache et endpoints API
+
+OAuth 2.0 : Authentification avec l’API Blizzard
+
+JSON : Format des données renvoyées par l’API
+
+Frontend :
+
+JavaScript : Récupération et affichage des données via requêtes API en AJAX (XMLHttpRequest)
+
+HTML/CSS : Structure et mise en page de l’application
+
+Autres :
+
+API Blizzard : Source des données du jeu
+
+GitHub : Gestion du code et des issues
+
+Fonctionnalités principales
+
+✅ Connexion à l’API Blizzard via OAuth 2.0 
+✅ Récupération des données des races, classes et spécialisations 
+✅ Gestion d’un cache en PHP pour optimiser les performances 
+✅ API REST en PHP exposant les données en JSON 
+✅ Interface JavaScript affichant les informations en temps réel
+
+Endpoints disponibles
+
+MéthodeEndpointParamètreDescriptionGETapi/listerClasses.phpListe toute les classeGETapi/listerRaceParFaction.php?faction={alliance/horde}Liste les races jouable par factionGETapi/listerSpecialisationParClasse?id={int}Liste les spécialisation de chaque classeGETapi/detaillerClasse?id={int}Donne des informations additionels sur les classesGETapi/detaillerRace?id={int}Donne des informations additionels sur les races
+
+Code de Cache
+
+Le gestionnaire de cache que j'ai créer est ce qui ma pris le plus de temps à programmer. Étant donnée que je ne voulais pas utilisé de librairie ou de service externe j'ai décidé de faire un système de cache json Static et facilement exportable.
+
+class CacheManager {
+    private static string $cacheDir;
+    private static int $cacheExpiration;
+
+    public static function init(): void {
+        if (!isset(self::$cacheExpiration) || !isset(self::$cacheDir)) {
+            self::$cacheExpiration = (int) EnvLoader::get('CACHE_EXPIRATION');
+            self::$cacheDir = EnvLoader::get('CACHE_DIR');
+
+            if (!file_exists(self::$cacheDir)) {
+                mkdir(self::$cacheDir, 0777, true);
+            }
+        }
+    }
+
+    public static function get(string $key): ?array {
+        self::init();
+
+        $filePath = self::$cacheDir . '/' . $key . '.json';
+        if (file_exists($filePath)) {
+            $content = file_get_contents($filePath);
+            $data = json_decode($content, true);
+
+            if (isset($data['timestamp']) && time() - $data['timestamp'] < self::$cacheExpiration) {
+                return $data['data'];
+            }
+        }
+        return null;
+    }
+    
+    public static function set(string $key, array $data): void {
+        self::init();
+        $filePath = self::$cacheDir . '/' . $key . '.json';
+        $dataToStore = [
+            'timestamp' => time(),
+            'data' => $data
+        ];
+        file_put_contents($filePath, json_encode($dataToStore));
+    }
+
+    public static function isCached(string $key): bool {
+        self::init();
+        return file_exists(self::$cacheDir . '/' . $key . '.json');
+    }
+}
