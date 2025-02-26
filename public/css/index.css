@@ -1,4 +1,4 @@
-body {
+.background {
     background-image: url("../asset/background/map.jpg");
     background-position: top;
 }
@@ -10,4 +10,11 @@ footer {
     width: 100%;
     color: white;
     text-align: center;
-  }
+}
+
+.intro-text {
+    max-width: 600px;
+    width: 100%;
+    font-size: 1.2rem;
+    line-height: 1.5;
+}
