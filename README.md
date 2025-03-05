@@ -50,7 +50,7 @@ Prérequis :
 Cloner le repo :
 ```bash
 git clone https://github.com/wow-classes-101
-cd ton-repo
+cd wow-classes-101
 ```
 Configurer les variables d’environnement :
 
