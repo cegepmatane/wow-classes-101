@@ -1,0 +1,20 @@
+.background {
+    background-image: url("../asset/background/map.jpg");
+    background-position: top;
+}
+
+.container {
+
+}
+
+.class-card {
+    width: 100%;
+    max-width: 100%;
+}
+.specialization {
+    display: none;
+    margin-top: 10px;
+}
+.specialization.active {
+    display: block;
+}
